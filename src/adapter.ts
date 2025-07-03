@@ -274,12 +274,17 @@ export class TCPAdapter {
         host: string,
         port: number,
     ): void {
+        const wasClosed = this.closed;
         this.host = host;
         this.port = port;
         this.#current_conn?.close();
         this.closed = false;
         this.status.value = TCPAdapterConnectionStatus.DISCONNECTED;
         this.details.value = TCPAdapterConnectionDetails.NO_ERROR;
+
+        if (wasClosed) {
+            this.#loop();
+        }
     }
 
     close(): void {
