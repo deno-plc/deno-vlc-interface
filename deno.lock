@@ -42,6 +42,8 @@
   "workspace": {
     "dependencies": [
       "jsr:@deno-plc/adapter-tcp@^1.1.0",
+      "jsr:@deno-plc/signals@^0.0.2",
+      "jsr:@logtape/logtape@~0.8.2",
       "jsr:@std/assert@1"
     ]
   }

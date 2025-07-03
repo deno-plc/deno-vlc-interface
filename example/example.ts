@@ -1,6 +1,6 @@
 import { VLCControlInterface } from "../mod.ts";
 
-const z = new VLCControlInterface("localhost", 4212, "password", {
+new VLCControlInterface("localhost", 4212, "password", {
     onConnect(vlc) {
         setInterval(() => {
             const z = vlc.getPlaylist().findLast((e) => e.name === "Szene1")?.id;
@@ -11,7 +11,3 @@ const z = new VLCControlInterface("localhost", 4212, "password", {
         }, 1000);
     },
 });
-
-setTimeout(() => {
-    z?.close();
-}, 3000);

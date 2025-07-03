@@ -1,10 +1,9 @@
 // deno-lint-ignore-file no-explicit-any
-import { TCPAdapter, type TCPAdapterCallback, type TCPAdapterSession } from "@deno-plc/adapter-tcp";
+import { TCPAdapter, type TCPAdapterCallback, type TCPAdapterSession } from "./adapter.ts";
 import { vlcCommands } from "./vlc_commands.ts";
 
 export class VLCControlInterface extends TCPAdapter {
     send_fn: ((data: Uint8Array<ArrayBufferLike>) => void) | undefined = undefined;
-    shouldDestroy = false;
 
     constructor(
         host: string,
@@ -21,17 +20,15 @@ export class VLCControlInterface extends TCPAdapter {
             port: port,
             label: "vlc",
             sessionFactory: (send: TCPAdapterCallback) => {
-                if (this.shouldDestroy) {
-                    throw new Error("Closing connection...");
-                }
-
                 return new VLCControlProtocolAdapterSession(this, send, playlistUpdateInterval);
             },
+            verbose: true,
         });
     }
 
-    close(): void {
-        this.shouldDestroy = true;
+    change(host: string, port: number, password: string): void {
+        super.redirect(host, port);
+        this.password = password;
     }
 }
 
@@ -157,10 +154,6 @@ class VLCControlProtocolAdapterSession implements TCPAdapterSession {
     }
 
     recv(d: Uint8Array): void {
-        if (this.adapter.shouldDestroy) {
-            throw new Error("Closing connection...");
-        }
-
         if (this.recvCallback) {
             this.recvCallback(d);
 
