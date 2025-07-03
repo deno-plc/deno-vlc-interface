@@ -1,7 +1,4 @@
 {
-    "tasks": {
-        "dev": "deno run --watch main.ts"
-    },
     "fmt": {
         "indentWidth": 4,
         "lineWidth": 300
@@ -9,5 +6,8 @@
     "imports": {
         "@std/assert": "jsr:@std/assert@1",
         "@deno-plc/adapter-tcp": "jsr:@deno-plc/adapter-tcp@^1.1.0"
-    }
+    },
+    "license": "GPL-3.0",
+    "name": "@deno-plc/vlc-interface",
+    "version": "1.0.0"
 }

@@ -1,4 +1,4 @@
-import { VLCControlInterface } from "../src/vlc_control.ts";
+import { VLCControlInterface } from "../mod.ts";
 
 new VLCControlInterface("localhost", 4212, "password", {
     onConnect(vlc) {
