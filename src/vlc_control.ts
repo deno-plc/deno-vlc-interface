@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { TCPAdapter, TCPAdapterCallback, TCPAdapterSession } from "@deno-plc/adapter-tcp";
+import { TCPAdapter, type TCPAdapterCallback, type TCPAdapterSession } from "@deno-plc/adapter-tcp";
 import { vlcCommands } from "./vlc_commands.ts";
 
 export class VLCControlInterface extends TCPAdapter {
