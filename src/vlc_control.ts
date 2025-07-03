@@ -4,7 +4,7 @@ import { vlcCommands } from "./vlc_commands.ts";
 
 export class VLCControlInterface extends TCPAdapter {
     send_fn: ((data: Uint8Array<ArrayBufferLike>) => void) | undefined = undefined;
-    public destroy: (() => void) | undefined = undefined;
+    shouldDestroy = false;
 
     constructor(
         host: string,
@@ -21,9 +21,17 @@ export class VLCControlInterface extends TCPAdapter {
             port: port,
             label: "vlc",
             sessionFactory: (send: TCPAdapterCallback) => {
+                if (this.shouldDestroy) {
+                    throw new Error("Closing connection...");
+                }
+
                 return new VLCControlProtocolAdapterSession(this, send, playlistUpdateInterval);
             },
         });
+    }
+
+    close(): void {
+        this.shouldDestroy = true;
     }
 }
 
@@ -146,11 +154,13 @@ class VLCControlProtocolAdapterSession implements TCPAdapterSession {
                 }, this.playlistUpdateInterval);
             }
         });
-
-        this.adapter.destroy = this.destroy.bind(this);
     }
 
     recv(d: Uint8Array): void {
+        if (this.adapter.shouldDestroy) {
+            throw new Error("Closing connection...");
+        }
+
         if (this.recvCallback) {
             this.recvCallback(d);
 
