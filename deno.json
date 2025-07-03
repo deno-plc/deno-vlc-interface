@@ -9,5 +9,6 @@
     },
     "license": "GPL-3.0",
     "name": "@deno-plc/vlc-interface",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "exports": "./mod.ts"
 }
